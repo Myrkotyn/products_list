@@ -1,0 +1,12 @@
+AppBundle\Entity\User:
+    type: entity
+    table: users
+    id:
+        id:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: AUTO

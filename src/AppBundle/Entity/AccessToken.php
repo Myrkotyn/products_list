@@ -6,14 +6,13 @@ use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * Class AccessToken
+ * @package AppBundle\Entity
  */
 class AccessToken extends BaseAccessToken
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var integer
      */
     protected $id;
 
