@@ -1,0 +1,76 @@
+---
+- set_fact:
+   project_release: "products"
+
+- name: Create/prepare directories for release and shared data.
+  file: state=directory path={{item.path}}
+  with_items:
+    - { path: "{{project_root}}" }
+    - { path: "{{project_root}}/app/config" }
+    - { path: "{{project_root}}/app/logs" }
+    - { path: "{{project_root}}/app/cache" }
+    - { path: "{{project_root}}/web/uploads/attachments" }
+
+- name: Check if config dir exists.
+  stat: path={{project_root}}/app/config
+  register: config_dir
+
+# TODO: need to decide how to migrate it from project to deploy
+- name: Create the configurations for sites
+  template: src=parameters.yml.j2 dest={{project_root}}/app/config/parameters.yml
+  #with_dict: project_parameters
+
+- name: Check if app/config/parameters.yml exists.
+  stat: path={{project_root}}/app/config/parameters.yml
+  register: parameters_ini
+
+- name: Create symlink for app/config/parameters.yml from shared directory.
+  shell: ln -s {{project_root}}/app/config/parameters.yml {{project_root}}/app/config/parameters.yml creates={{project_root}}/app/config/parameters.yml
+  when: parameters_ini.stat.exists
+
+- name: Run composer install.
+  shell: cd {{project_root}}/ && export SYMFONY_ENV={{project_env}} && export COMPOSER_PROCESS_TIMEOUT=900 && {{project_php_path}} /usr/local/bin/composer install {{project_composer_opts}}
+
+- name: Install assets.
+  shell: cd {{project_root}}/ && {{project_php_path}} bin/console assets:install web --env={{project_env}}
+
+- name: check if database exist
+  shell: /usr/bin/mysql -u {{mysql.user_name}} -p -e 'SHOW DATABASES;' | grep {{ mysql.db_name }}
+  args:
+      stdin: "{{ mysql.user_password }}"
+  register: dbstatus
+  ignore_errors: yes
+
+- name: Run db create.
+  shell: cd {{project_root}}/; then {{project_php_path}} bin/console doctrine:database:create --no-interaction; fi
+  when: dbstatus.stdout == ""
+
+- name: Run migrations.
+  shell: cd {{project_root}}/; then {{project_php_path}} bin/console doctrine:migrations:migrate -n; fi
+  when: dbstatus.stdout  == "Migrated"
+
+- name: Run db schema update.
+  shell: cd {{project_root}}/; then {{project_php_path}} bin/console doctrine:schema:update --force --no-interaction; fi
+  when: dbstatus.stdout == ""
+
+- name: Create symlink.
+  file: state=link src={{project_root}}/ path={{project_root}}/current
+
+- name: Symfony | Permissions | Set owner
+  file:
+    path: "{{ project_root }}"
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    recurse: yes
+
+- name: Permissions for phpunit
+  file: path=/var/www/products/var/{{ item }} owner=www-data group=vagrant mode=0775
+  with_items:
+    - logs
+    - cache
+
+- name: restart nginx
+  service: name=nginx state=restarted
+
+- name: restart php7-fpm
+  service: name=php7.1-fpm state=restarted

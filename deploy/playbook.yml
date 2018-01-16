@@ -1,0 +1,10 @@
+---
+- hosts: vagrant_local
+  become: true
+  roles:
+    - common
+    - dev_tool
+    - mysql
+    - php
+    - nginx
+    - products_dev

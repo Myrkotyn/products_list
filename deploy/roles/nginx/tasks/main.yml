@@ -1,0 +1,66 @@
+---
+
+- name: Ensure APT official nginx key
+  apt_key: >
+    url=http://nginx.org/keys/nginx_signing.key
+    state=present
+
+- name: Add nginx repository into sources list
+  apt_repository: >
+    repo='deb http://nginx.org/packages/ubuntu/ trusty nginx'
+    state=present
+
+- name: Remove old nginx
+  apt: >
+    package="{{ item }}"
+    state=absent
+  with_items:
+    - nginx
+    - nginx-full
+    - nginx-core
+    - nginx-common
+  when: "'production' in group_names"
+
+- name: Install nginx packages
+  apt: >
+    package=nginx
+    state=latest
+    update_cache=true
+    cache_valid_time=3600
+  notify: enable nginx
+
+- name: Create directories
+  file: >
+    path={{ item }}
+    state=directory
+    mode=0775
+  with_items:
+    - /etc/nginx/sites-enabled
+    - /etc/nginx/sites-available
+
+- name: Copy nginx.conf
+  copy: >
+    src=nginx.conf
+    dest=/etc/nginx/nginx.conf
+    mode=0644
+
+- name: Remove nginx default config
+  file: >
+    path=/etc/nginx/sites-enabled/default
+    state=absent
+
+- name: Deploy web configuration file
+  template:
+    src: "{{ nginx.config }}"
+    dest: /etc/nginx/sites-available/products.conf
+
+- name: Enabling nginx configuration
+  file: >
+    src=/etc/nginx/sites-available/products.conf
+    dest=/etc/nginx/sites-enabled/products.conf
+    state=link
+
+- name: Restart nginx
+  service: >
+    name=nginx
+    state=restarted

@@ -1,0 +1,25 @@
+---
+- name: Check if composer exists
+  become: false
+  stat: path=/usr/local/bin/composer
+  register: composer_file
+
+- name: Install Composer
+  get_url: url=https://getcomposer.org/composer.phar dest=/usr/local/bin mode=0755 validate_certs=no
+  when: composer_file.stat.exists == false
+
+- name: Rename Composer
+  command: mv /usr/local/bin/composer.phar /usr/local/bin/composer
+  when: composer_file.stat.exists == false
+
+- name: Remove Apache2 web server packages
+  apt:
+    package: "{{ item }}"
+    state: absent
+  with_items:
+    - apache2
+
+- name: Remove default Apache2 config file
+  file:
+    path: /etc/apache2/
+    state: absent

@@ -1,0 +1,29 @@
+---
+project_owner: www-data
+project_group: www-data
+project_root: "{{ project.document_root }}"
+project_release: ~
+project_php_path: php
+project_composer_path: "{{ project.document_root }}"
+project_env: "{{ project.env }}"
+project_keep_releases: 5
+project_console_opts: ''
+project_composer_opts: '--no-interaction'
+
+fire_schema_update: true
+
+fire_migrations: true
+
+project_parameters:
+  database_driver:   pdo_mysql
+  database_host:     127.0.0.1
+  database_port:     ~
+  database_name:     "{{ mysql.db_name }}"
+  database_user:     "{{ mysql.user_name }}"
+  database_password: "{{ mysql.user_password }}"
+  mailer_transport:  smtp
+  mailer_host:       "{{ mailer.mailer_host }}"
+  mailer_user:       "{{ mailer.mailer_user }}"
+  mailer_password:   "{{ mailer.mailer_password }}"
+  locale:            en
+  secret:            ThisTokenIsNotSoSecretChangeIt

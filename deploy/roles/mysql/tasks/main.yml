@@ -1,0 +1,34 @@
+---
+- name: Set debconf values for mysql
+  debconf:
+    name=mysql-server
+    question={{ item.question }}
+    value={{ item.value }}
+    vtype={{ item.vtype }}
+  with_items:
+    - { question: 'mysql-server/root_password', value: "{{mysql.root_password}}", vtype: 'password' }
+    - { question: 'mysql-server/root_password_again', value: "{{mysql.root_password}}", vtype: 'password' }
+
+- name: Install MySQL
+  apt: 
+    pkg: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+    state: present
+  with_items:
+  - python-mysqldb
+  - mysql-server-5.6
+
+- name: Start the MySQL service
+  service: 
+    name: mysql 
+    state: started
+    enabled: true
+
+- name: Create database user
+  mysql_user: 
+    login_user: "root"
+    login_password: "{{ mysql.root_password }}"
+    name: "{{ mysql.user_name }}"
+    password: "{{ mysql.user_password }}"
+    priv: "*.*:ALL,GRANT"

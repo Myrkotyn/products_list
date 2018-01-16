@@ -1,0 +1,19 @@
+---
+mysql:
+  root_password: 1
+  db_name: products
+  user_name: root
+  user_password: 1
+
+nginx:
+  config: products.conf
+
+mailer:
+  mailer_host: 192.168.50.100
+  mailer_user: ~
+  mailer_password: ~
+  mailer_port: 25
+
+project:
+  document_root: /var/www/products
+  env: dev
