@@ -1,6 +1,7 @@
 AppBundle\Entity\Product:
     type: entity
     table: products
+    repositoryClass: AppBundle\Repository\ProductRepository
     id:
         id:
             type: smallint
@@ -10,4 +11,10 @@ AppBundle\Entity\Product:
             id: true
             generator:
                 strategy: AUTO
-
+    fields:
+        name:
+            type: string
+            nullable: false
+        price:
+            type: float
+            nullable: false

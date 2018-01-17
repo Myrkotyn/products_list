@@ -2,34 +2,24 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-
 /**
  * Class Product
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
- * @ORM\Table(name="products")
+ * @package AppBundle\Entity
  */
 class Product
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var $id integer
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank()
-     * @Assert\Type("string")
+     * @var $name string
      */
     private $name;
 
     /**
-     * @ORM\Column(type="float")
-     * @Assert\NotBlank()
-     * @Assert\Type("float")
+     * @var $price float
      */
     private $price;
 
