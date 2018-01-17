@@ -1,55 +1,52 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
-
+/**
+ * Class Category
+ * @package AppBundle\Entity
+ */
 class Category
 {
     /**
-     * @var int
+     * @var $id int
      */
     private $id;
 
     /**
-     * @var string
+     * @var $title string
      */
     private $title;
 
     /**
-     * @var integer
+     * @var $lft integer
      */
     private $lft;
 
     /**
-     * @var integer
+     * @var $lvl integer
      */
     private $lvl;
 
     /**
-     * @var integer
+     * @var $rgt integer
      */
     private $rgt;
 
     /**
-     * @var integer
+     * @var $root integer
      */
     private $root;
 
     /**
-     *
+     * @var $parent Category
      */
     private $parent;
 
     /**
-     *
+     * @var $children Category
      */
     private $children;
-
-    /**
-     * @var string
-     */
-    private $slug;
 
     /**
      * @return int
@@ -57,14 +54,6 @@ class Category
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
     }
 
     /**
