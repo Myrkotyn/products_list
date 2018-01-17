@@ -12,6 +12,6 @@ AppBundle\Entity\RefreshToken:
                 strategy: AUTO
     manyToOne:
         client:
-            targetEntity: Client
+            targetEntity: AppBundle\Entity\Client
         user:
-            targetEntity: User
+            targetEntity: AppBundle\Entity\User
