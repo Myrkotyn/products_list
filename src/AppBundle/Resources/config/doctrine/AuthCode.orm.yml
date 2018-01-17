@@ -1,0 +1,17 @@
+AppBundle\Entity\AuthCode:
+    type: entity
+    table: oauth2_auth_code
+    id:
+        id:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        client:
+            targetEntity: Client
+        user:
+            targetEntity: User
