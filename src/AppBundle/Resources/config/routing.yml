@@ -1,3 +1,7 @@
 product:
     resource: 'routing/product.yml'
     prefix: /product
+
+category:
+    resource: 'routing/category.yml'
+    prefix: /category

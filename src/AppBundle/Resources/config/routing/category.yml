@@ -1,0 +1,12 @@
+api_v1_get_category:
+    path: /{id}
+    controller: AppBundle:Category:get
+    methods: [GET]
+    requirements:
+        id: \d+
+
+api_v1_get_all_categories:
+    path: /
+    controller: AppBundle:Category:getAll
+    methods: [GET]
+

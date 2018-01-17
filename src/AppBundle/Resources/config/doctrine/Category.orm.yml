@@ -1,7 +1,7 @@
 AppBundle\Entity\Category:
     type: entity
     table: categories
-    repositoryClass: Gedmo\Tree\Entity\Repository\NestedTreeRepository
+    repositoryClass: AppBundle\Repository\CategoryRepository
     gedmo:
         tree:
             type: nested
