@@ -12,15 +12,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ProductController
- *
- * @Rest\Route("/api/product")
+ * @package AppBundle\Controller
  */
 class ProductController extends FOSRestController
 {
     /**
      * Get product by id
-     *
-     * @Rest\Get("/{id}", name="get_product")
      *
      * @param Request $request
      * @param Product $product
@@ -33,8 +30,6 @@ class ProductController extends FOSRestController
 
     /**
      * Get all products
-     *
-     * @Rest\Get("", name="get_all_books")
      *
      * @param Request $request
      * @return View
@@ -58,8 +53,6 @@ class ProductController extends FOSRestController
 
     /**
      * Create new product
-     *
-     * @Rest\Post("", name="create_new_product")
      *
      * @param Request $request
      * @return View
@@ -88,8 +81,6 @@ class ProductController extends FOSRestController
 
     /**
      * Update product entity
-     *
-     * @Rest\Put("/{id}", name="update_product")
      *
      * @param Request $request
      * @param $id
@@ -126,8 +117,6 @@ class ProductController extends FOSRestController
 
     /**
      * Delete product entity
-     *
-     * @Rest\Delete("/{id}", name="delete_product")
      *
      * @param Request $request
      * @param Product $product
