@@ -1,0 +1,30 @@
+api_v1_get_product:
+    path: /{id}
+    controller: AppBundle:Product:get
+    methods: [GET]
+    requirements:
+        id: \d+
+
+api_v1_get_all_products:
+    path: /
+    controller: AppBundle:Product:getAll
+    methods: [GET]
+
+api_v1_create_product:
+    path: /
+    methods: [POST]
+    controller: AppBundle:Product:create
+
+api_v1_update_product:
+    path: /{id}
+    controller: AppBundle:Product:update
+    methods: [PUT]
+    requirements:
+        id: \d+
+
+api_v1_delete_product:
+    path: /{id}
+    controller: AppBundle:Product:delete
+    methods: [DELETE]
+    requirements:
+        id: \d+
