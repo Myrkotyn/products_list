@@ -1,0 +1,12 @@
+AppBundle\Entity\Product:
+    exclusion_policy: ALL
+    properties:
+        id:
+            read_only: true
+            groups: [default, update]
+        name:
+            type: string
+            groups: [default, create, update]
+        price:
+            type: float
+            groups: [default, create, update]

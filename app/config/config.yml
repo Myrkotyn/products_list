@@ -17,8 +17,10 @@ framework:
         strict_requirements: ~
     form: ~
     csrf_protection: ~
-    validation: { enable_annotations: true }
-    #serializer: { enable_annotations: true }
+    validation:
+        enabled: true
+    serializer:
+        enabled: true
     default_locale: '%locale%'
     trusted_hosts: ~
     session:
@@ -91,6 +93,8 @@ fos_rest:
         view_response_listener: 'force'
         formats:
             json: true
+    service:
+        serializer: fos_rest.serializer.jms
 
 fos_oauth_server:
     db_driver: orm       # Drivers available: orm, mongodb, or propel
@@ -100,3 +104,7 @@ fos_oauth_server:
     auth_code_class:     AppBundle\Entity\AuthCode
     service:
         user_provider: fos_user.user_provider.username
+
+jms_serializer:
+    metadata:
+        auto_detection: true

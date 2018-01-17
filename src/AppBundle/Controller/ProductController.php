@@ -7,8 +7,11 @@ use AppBundle\Form\ProductType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
+use JMS\Serializer\DeserializationContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use FOS\RestBundle\Context\Context;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class ProductController
@@ -20,12 +23,22 @@ class ProductController extends FOSRestController
      * Get product by id
      *
      * @param Request $request
-     * @param Product $product
+     * @param int $id
+     * @throws NotFoundHttpException
      * @return View
      */
-    public function getAction(Request $request, Product $product)
+    public function getAction(Request $request, int $id)
     {
-        return new View($product, Response::HTTP_OK);
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+
+        if (!$product instanceof Product) {
+            throw new NotFoundHttpException(sprintf("Product #%d does not exist", $id));
+        }
+        $view = View::create($product);
+        $context = (new Context())->setGroups(['default']);
+        $view->setContext($context);
+
+        return $view;
     }
 
     /**
@@ -46,9 +59,13 @@ class ProductController extends FOSRestController
         }
 
         if (!$products) {
-            return new View("Products not found", Response::HTTP_NOT_FOUND);
+            throw new NotFoundHttpException("Product not found!");
         }
-        return new View($products, Response::HTTP_OK);
+        $view = View::create($products);
+        $context = (new Context())->setGroups(['default']);
+        $view->setContext($context);
+
+        return $view;
     }
 
     /**
@@ -57,73 +74,88 @@ class ProductController extends FOSRestController
      * @param Request $request
      * @return View
      */
-    public function createAction(Request $request)
+    public function postAction(Request $request)
     {
-        $product = new Product();
-        $form = $this->createForm(ProductType::class, $product, [
-            'method' => Request::METHOD_POST
-        ]);
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $product = $form->getData();
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($product);
-            $em->flush();
-
-            return new View($product, Response::HTTP_CREATED);
+        /** @var Product $product */
+        $product = $this->get('jms_serializer')->deserialize(
+            $request->getContent(),
+            Product::class,
+            'json',
+            DeserializationContext::create()->setGroups(['create'])
+        );
+        $errors = $this->get('validator')->validate($product, null, ['create']);
+        if (count($errors) > 0) {
+            return View::create($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        return new View($form, Response::HTTP_UNPROCESSABLE_ENTITY);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($product);
+        $em->flush();
+
+        $view = View::create($product);
+        $context = (new Context())->setGroups(['default']);
+        $view->setContext($context);
+
+        return $view;
     }
 
     /**
      * Update product entity
      *
      * @param Request $request
-     * @param $id
+     * @param integer $id
      * @return View
      */
-    public function updateAction(Request $request, $id)
+    public function putAction(Request $request, int $id)
     {
         $em = $this->getDoctrine()->getManager();
         $product = $em->getRepository(Product::class)->find($id);
         $response = Response::HTTP_NO_CONTENT;
-        if (null === $product) {
-            $product = new Product();
+        $groups = ['update'];
+
+        if (!$product) {
+            $groups = ['create'];
             $response = Response::HTTP_CREATED;
         }
 
-        $form = $this->createForm(ProductType::class, $product, [
-            'method' => Request::METHOD_PUT
-        ]);
+        /** @var Product $product */
+        $deserializedProduct = $this->get('jms_serializer')->deserialize(
+            $request->getContent(),
+            Product::class,
+            'json',
+            DeserializationContext::create()->setGroups($groups)
+        );
 
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $product = $form->getData();
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($product);
-            $em->flush();
-
-            return new View($product, $response);
+        $errors = $this->get('validator')->validate($deserializedProduct, null, $groups);
+        if (count($errors) > 0) {
+            return View::create($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        if ($product) {
+            $product->setName($deserializedProduct->getName())
+                ->setPrice($deserializedProduct->getPrice());
+            $deserializedProduct = $product;
         }
 
-        return new View($form, Response::HTTP_UNPROCESSABLE_ENTITY);
+        $em->persist($deserializedProduct);
+        $em->flush();
+
+        return View::create($deserializedProduct, $response);
     }
 
     /**
      * Delete product entity
      *
      * @param Request $request
-     * @param Product $product
+     * @param int $id
      * @return View
      */
-    public function deleteAction(Request $request, Product $product)
+    public function deleteAction(Request $request, int $id)
     {
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+
+        if (!$product) {
+            throw new NotFoundHttpException(sprintf("Product #%d does not exist", $id));
+        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($product);
         $em->flush();

@@ -11,13 +11,13 @@ api_v1_get_all_products:
     methods: [GET]
 
 api_v1_create_product:
-    path: /
+    path: /new
     methods: [POST]
-    controller: AppBundle:Product:create
+    controller: AppBundle:Product:post
 
 api_v1_update_product:
-    path: /{id}
-    controller: AppBundle:Product:update
+    path: /{id}/edit
+    controller: AppBundle:Product:put
     methods: [PUT]
     requirements:
         id: \d+
