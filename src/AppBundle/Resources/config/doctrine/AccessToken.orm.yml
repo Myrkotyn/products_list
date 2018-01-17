@@ -13,4 +13,5 @@ AppBundle\Entity\AccessToken:
     manyToOne:
         client:
             targetEntity: Client
-            joinColumns:
+        user:
+            targetEntity: User
