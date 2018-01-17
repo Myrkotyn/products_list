@@ -6,25 +6,23 @@ use FOS\OAuthServerBundle\Entity\RefreshToken as BaseRefreshToken;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * Class RefreshToken
+ * @package AppBundle\Entity
  */
 class RefreshToken extends BaseRefreshToken
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var $id integer
      */
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(nullable=false)
+     * @var $client Client
      */
     protected $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @var $user User
      */
     protected $user;
 }
