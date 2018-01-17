@@ -6,11 +6,12 @@ use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * Class User
+ * @package AppBundle\Entity
  */
 class User extends BaseUser
 {
     /**
-     * @var integer
+     * @var $id integer
      */
     protected $id;
 

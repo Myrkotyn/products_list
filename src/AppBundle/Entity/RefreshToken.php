@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use FOS\OAuthServerBundle\Entity\RefreshToken as BaseRefreshToken;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class RefreshToken

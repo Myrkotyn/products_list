@@ -11,17 +11,17 @@ use FOS\OAuthServerBundle\Entity\AuthCode as BaseAuthCode;
 class AuthCode extends BaseAuthCode
 {
     /**
-     * @var integer
+     * @var $id integer
      */
     protected $id;
 
     /**
-     * @var Client
+     * @var $client Client
      */
     protected $client;
 
     /**
-     * @var User
+     * @var $user User
      */
     protected $user;
 }

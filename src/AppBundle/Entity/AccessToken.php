@@ -11,17 +11,17 @@ use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
 class AccessToken extends BaseAccessToken
 {
     /**
-     * @var integer
+     * @var $id integer
      */
     protected $id;
 
     /**
-     * @var Client
+     * @var $client Client
      */
     protected $client;
 
     /**
-     * @var User
+     * @var $user User
      */
     protected $user;
 }
