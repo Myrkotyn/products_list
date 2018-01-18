@@ -14,3 +14,17 @@ api_v1_create_category:
     path: /new
     controller: AppBundle:Category:post
     methods: [POST]
+
+api_v1_update_category:
+    path: /{id}/edit
+    controller: AppBundle:Category:put
+    methods: [PUT]
+    requirements:
+        id: \d+
+
+api_v1_delete_category:
+    path: /{id}
+    controller: AppBundle:Category:delete
+    methods: [DELETE]
+    requirements:
+        id: \d+

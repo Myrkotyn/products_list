@@ -5,7 +5,7 @@ AppBundle\Entity\Category:
             groups: [default, create]
         title:
             type: string
-            groups: [default, create]
+            groups: [default, create, update]
         parent:
             type: AppBundle\Entity\Category
             access_type: public_method
@@ -13,3 +13,6 @@ AppBundle\Entity\Category:
                 getter: getParent
                 setter: setParent
             groups: [default, create]
+        children:
+            type: AppBundle\Entity\Category
+            groups: [default]
