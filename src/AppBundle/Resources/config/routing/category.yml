@@ -10,3 +10,7 @@ api_v1_get_all_categories:
     controller: AppBundle:Category:getAll
     methods: [GET]
 
+api_v1_create_category:
+    path: /new
+    controller: AppBundle:Category:post
+    methods: [POST]

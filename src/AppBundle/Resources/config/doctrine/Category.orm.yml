@@ -36,9 +36,9 @@ AppBundle\Entity\Category:
         root:
             targetEntity: AppBundle\Entity\Category
             joinColumn:
-              name: tree_root
-              referencedColumnName: id
-              onDelete: CASCADE
+                name: tree_root
+                referencedColumnName: id
+                onDelete: CASCADE
             gedmo:
               - treeRoot
         parent:
@@ -48,6 +48,7 @@ AppBundle\Entity\Category:
                 name: parent_id
                 referencedColumnName: id
                 onDelete: CASCADE
+            cascade: ["persist"]
             gedmo:
                 - treeParent
     oneToMany:

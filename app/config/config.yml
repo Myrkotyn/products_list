@@ -108,3 +108,8 @@ fos_oauth_server:
 jms_serializer:
     metadata:
         auto_detection: true
+
+stof_doctrine_extensions:
+    orm:
+        default:
+            tree: true

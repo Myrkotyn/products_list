@@ -1,0 +1,15 @@
+AppBundle\Entity\Category:
+    exclusion_policy: ALL
+    properties:
+        id:
+            groups: [default, create]
+        title:
+            type: string
+            groups: [default, create]
+        parent:
+            type: AppBundle\Entity\Category
+            access_type: public_method
+            accessor:
+                getter: getParent
+                setter: setParent
+            groups: [default, create]

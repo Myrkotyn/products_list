@@ -93,4 +93,12 @@ class Category
     {
         return $this->parent;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
 }
