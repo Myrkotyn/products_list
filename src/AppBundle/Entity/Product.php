@@ -27,6 +27,11 @@ class Product
     private $price;
 
     /**
+     * @var Category $category
+     */
+    private $category;
+
+    /**
      * @return integer
      */
     public function getId()
@@ -65,9 +70,28 @@ class Product
      * @param float $price
      * @return Product
      */
-    public function setPrice($price): Product
+    public function setPrice($price): ? Product
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return Category
+     */
+    public function getCategory(): ? Category
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param Category $category
+     * @return Product
+     */
+    public function setCategory($category): Product
+    {
+        $this->category = $category;
 
         return $this;
     }

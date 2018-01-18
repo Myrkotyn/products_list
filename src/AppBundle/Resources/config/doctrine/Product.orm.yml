@@ -18,3 +18,8 @@ AppBundle\Entity\Product:
         price:
             type: float
             nullable: false
+    manyToOne:
+        category:
+            targetEntity: AppBundle\Entity\Category
+            inversedBy: products
+

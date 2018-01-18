@@ -35,7 +35,7 @@ class CategoryController extends FOSRestController
             return new View("Categories not found", Response::HTTP_NOT_FOUND);
         }
         $view = View::create($categories);
-        $context = (new Context())->setGroups(['default']);
+        $context = (new Context())->setGroups(['tree']);
         $view->setContext($context);
 
         return $view;

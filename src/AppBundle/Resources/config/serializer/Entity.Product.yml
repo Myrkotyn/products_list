@@ -10,3 +10,6 @@ AppBundle\Entity\Product:
         price:
             type: float
             groups: [default, create, update]
+        category:
+            type: AppBundle\Entity\Category
+            groups: [default, create, update]

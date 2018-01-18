@@ -57,3 +57,10 @@ AppBundle\Entity\Category:
             mappedBy: parent
             orderBy:
                 lft: ASC
+        products:
+            targetEntity: AppBundle\Entity\Product
+            mappedBy: category
+            joinColumn:
+                name: product_id
+                referencedColumnName: id
+                onDelete: CASCADE

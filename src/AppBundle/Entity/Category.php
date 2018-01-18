@@ -49,6 +49,11 @@ class Category
     private $children;
 
     /**
+     * @var $products Product[]
+     */
+    private $products;
+
+    /**
      * @return int
      */
     public function getId()

@@ -2,17 +2,17 @@ AppBundle\Entity\Category:
     exclusion_policy: ALL
     properties:
         id:
-            groups: [default, create]
+            groups: [default, create, tree, update]
         title:
             type: string
-            groups: [default, create, update]
+            groups: [default, create, update, tree]
         parent:
             type: AppBundle\Entity\Category
             access_type: public_method
             accessor:
                 getter: getParent
                 setter: setParent
-            groups: [default, create]
+            groups: [default, create, tree]
         children:
             type: AppBundle\Entity\Category
-            groups: [default]
+            groups: [tree]

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -82,6 +83,19 @@ class ProductController extends FOSRestController
             'json',
             DeserializationContext::create()->setGroups(['create'])
         );
+
+        $parent = $product->getCategory();
+        if ($parent !== null) {
+            $parentId = $parent->getId();
+            $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
+            $category = $categoryRepository->find($parentId);
+            if ($category) {
+                $product->setCategory($category);
+            } else {
+                $product->setCategory(null);
+            }
+        }
+
         $errors = $this->get('validator')->validate($product, null, ['create']);
         if (count($errors) > 0) {
             return View::create($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -117,13 +131,27 @@ class ProductController extends FOSRestController
             $response = Response::HTTP_CREATED;
         }
 
-        /** @var Product $product */
+        /** @var Product $deserializedProduct */
         $deserializedProduct = $this->get('jms_serializer')->deserialize(
             $request->getContent(),
             Product::class,
             'json',
             DeserializationContext::create()->setGroups($groups)
         );
+
+        $category = $deserializedProduct->getCategory();
+        if ($category !== null) {
+            $parentId = $category->getId();
+            $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
+            $category = $categoryRepository->find($parentId);
+            if ($category) {
+                $deserializedProduct->setCategory($category);
+                $product->setCategory($category);
+            } else {
+                $deserializedProduct->setCategory(null);
+                $product->setCategory(null);
+            }
+        }
 
         $errors = $this->get('validator')->validate($deserializedProduct, null, $groups);
         if (count($errors) > 0) {
