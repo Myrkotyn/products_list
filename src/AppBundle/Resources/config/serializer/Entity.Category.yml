@@ -2,7 +2,7 @@ AppBundle\Entity\Category:
     exclusion_policy: ALL
     properties:
         id:
-            groups: [default, create, tree, update]
+            groups: [default, create, update, tree]
         title:
             type: string
             groups: [default, create, update, tree]
@@ -12,7 +12,7 @@ AppBundle\Entity\Category:
             accessor:
                 getter: getParent
                 setter: setParent
-            groups: [default, create, tree]
+            groups: [default, create, tree, update]
         children:
             type: AppBundle\Entity\Category
             groups: [tree]

@@ -47,31 +47,23 @@ class CategoryController extends FOSRestController
      */
     public function postAction(Request $request)
     {
+        $category = new Category();
         /** @var Category $category */
-        $category = $this->get('jms_serializer')->deserialize(
+        $jsonCategory = $this->get('jms_serializer')->deserialize(
             $request->getContent(),
             Category::class,
             'json',
             DeserializationContext::create()->setGroups(['create'])
         );
 
-        //@TODO Find another way to do it
-        $parent = $category->getParent();
-        if ($parent !== null) {
-            $parentId = $parent->getId();
-            $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
-            $category->setParent($categoryRepository->find($parentId));
-        }
-
-        $errors = $this->get('validator')->validate($category, null, ['create']);
+        $errors = $this->get('validator')->validate($jsonCategory, null, ['create']);
         if (count($errors) > 0) {
             return View::create($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($category);
+        $category = $em->merge($jsonCategory);
         $em->flush();
-
         $view = View::create($category);
         $context = (new Context())->setGroups(['default']);
         $view->setContext($context);
@@ -89,14 +81,14 @@ class CategoryController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $category = $em->getRepository(Category::class)->find($id);
         $response = Response::HTTP_NO_CONTENT;
-        $groups = ['update'];
-
+        $groups = 'update';
 
         if (!$category) {
-            $groups = ['create'];
+            $groups = 'create';
             $response = Response::HTTP_CREATED;
         }
 
+        //@ToDo handler if parent id does not exist
         /** @var Category $deserializedCategory */
         $deserializedCategory = $this->get('jms_serializer')->deserialize(
             $request->getContent(),
@@ -104,12 +96,6 @@ class CategoryController extends FOSRestController
             'json',
             DeserializationContext::create()->setGroups($groups)
         );
-        $parent = $deserializedCategory->getParent();
-        if ($parent !== null) {
-            $parentId = $parent->getId();
-            $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
-            $category->setParent($categoryRepository->find($parentId));
-        }
 
         $errors = $this->get('validator')->validate($deserializedCategory, null, $groups);
         if (count($errors) > 0) {
@@ -117,14 +103,18 @@ class CategoryController extends FOSRestController
         }
 
         if ($category) {
-            $category->setTitle($deserializedCategory->getTitle());
-            $deserializedCategory = $category;
+            $category
+                ->setTitle($deserializedCategory->getTitle())
+                ->setParent($deserializedCategory->getParent());
+                $em->merge($category);
+        } else {
+            $category = new Category();
+            $category = $em->merge($deserializedCategory);
         }
 
-        $em->persist($deserializedCategory);
         $em->flush();
 
-        return View::create($deserializedCategory, $response);
+        return View::create($category, $response);
     }
 
     public function deleteAction(Request $request, int $id)

@@ -48,7 +48,6 @@ AppBundle\Entity\Category:
                 name: parent_id
                 referencedColumnName: id
                 onDelete: CASCADE
-            cascade: ["persist"]
             gedmo:
                 - treeParent
     oneToMany:

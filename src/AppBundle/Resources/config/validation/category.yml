@@ -10,3 +10,5 @@ AppBundle\Entity\Category:
             - Type:
                 type: AppBundle\Entity\Category
                 groups: [create, update]
+            - AppBundle\Validator\Constraints\CategoryExisting:
+                groups: [create, update]
