@@ -109,10 +109,13 @@ class CategoryController extends FOSRestController
 
             return View::create($deserializedCategory, Response::HTTP_CREATED);
         }
-
-
     }
 
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return View
+     */
     public function deleteAction(Request $request, int $id)
     {
         $category = $this->getDoctrine()->getRepository(Category::class)->find($id);
