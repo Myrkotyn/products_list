@@ -47,6 +47,7 @@ class CategoryController extends FOSRestController
      */
     public function postAction(Request $request)
     {
+        //@ToDo Handle exception if parent category does no exist
         /** @var Category $category */
         $category = $this->get('jms_serializer')->deserialize(
             $request->getContent(),
@@ -79,13 +80,6 @@ class CategoryController extends FOSRestController
     {
         $em = $this->getDoctrine()->getManager();
         $category = $em->getRepository(Category::class)->find($id);
-        $response = Response::HTTP_NO_CONTENT;
-        $groups = 'update';
-
-        if (!$category) {
-            $groups = 'create';
-            $response = Response::HTTP_CREATED;
-        }
 
         //@ToDo handler if parent id does not exist
         /** @var Category $deserializedCategory */
@@ -93,10 +87,10 @@ class CategoryController extends FOSRestController
             $request->getContent(),
             Category::class,
             'json',
-            DeserializationContext::create()->setGroups($groups)
+            DeserializationContext::create()->setGroups(['update'])
         );
 
-        $errors = $this->get('validator')->validate($deserializedCategory, null, $groups);
+        $errors = $this->get('validator')->validate($deserializedCategory, null, ['update']);
         if (count($errors) > 0) {
             return View::create($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
@@ -106,14 +100,17 @@ class CategoryController extends FOSRestController
                 ->setTitle($deserializedCategory->getTitle())
                 ->setParent($deserializedCategory->getParent());
             $em->merge($category);
+            $em->flush();
+
+            return View::create($category, Response::HTTP_NO_CONTENT);
         } else {
-            $category = new Category();
-            $category = $em->merge($deserializedCategory);
+            $em->persist($deserializedCategory);
+            $em->flush();
+
+            return View::create($deserializedCategory, Response::HTTP_CREATED);
         }
 
-        $em->flush();
 
-        return View::create($category, $response);
     }
 
     public function deleteAction(Request $request, int $id)
