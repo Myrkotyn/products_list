@@ -47,22 +47,21 @@ class CategoryController extends FOSRestController
      */
     public function postAction(Request $request)
     {
-        $category = new Category();
         /** @var Category $category */
-        $jsonCategory = $this->get('jms_serializer')->deserialize(
+        $category = $this->get('jms_serializer')->deserialize(
             $request->getContent(),
             Category::class,
             'json',
             DeserializationContext::create()->setGroups(['create'])
         );
 
-        $errors = $this->get('validator')->validate($jsonCategory, null, ['create']);
+        $errors = $this->get('validator')->validate($category, null, ['create']);
         if (count($errors) > 0) {
             return View::create($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $em = $this->getDoctrine()->getManager();
-        $category = $em->merge($jsonCategory);
+        $em->persist($category);
         $em->flush();
         $view = View::create($category);
         $context = (new Context())->setGroups(['default']);
@@ -106,7 +105,7 @@ class CategoryController extends FOSRestController
             $category
                 ->setTitle($deserializedCategory->getTitle())
                 ->setParent($deserializedCategory->getParent());
-                $em->merge($category);
+            $em->merge($category);
         } else {
             $category = new Category();
             $category = $em->merge($deserializedCategory);
