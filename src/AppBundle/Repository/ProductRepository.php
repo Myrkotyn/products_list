@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ProductRepository extends ServiceEntityRepository
@@ -27,5 +28,21 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter('search', "%$search%")
             ->getQuery()
             ->getResult();
+    }
+
+    public function productsByCategory($categoryId)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb
+            ->join('p.categories', 'c')
+            ->andWhere(
+                $qb->expr()->eq('c.id', ':categoryId')
+            )
+            ->setParameter('categoryId', $categoryId)
+            ->getQuery()
+            ->getResult();
+
+//        @todo recursive query for improve performance
     }
 }
