@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class Category
@@ -49,9 +50,22 @@ class Category
     private $children;
 
     /**
-     * @var $products Product[]
+     * @var $products ArrayCollection|Product[]
      */
     private $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
 
     /**
      * @return int
@@ -100,10 +114,31 @@ class Category
     }
 
     /**
-     * @return string
+     * @param Product $product
+     * @return Category|null $this
      */
-    public function __toString()
+    public function addProduct(Product $product): ? Category
     {
-        return $this->getTitle();
+        if ($this->products->contains($product)) {
+            return null;
+        }
+
+        $this->products->add($product);
+        $product->addCategory($this);
+
+        return $this;
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function removeProduct(Product $product)
+    {
+        if (!$this->products->contains($product)) {
+            return;
+        }
+
+        $this->products->remove($product);
+        $product->removeCategory($this);
     }
 }

@@ -12,10 +12,7 @@ AppBundle\Entity\Product:
                 groups: [create, update]
             - NotBlank:
                 groups: [create, update]
-        category:
-            - Type:
-                type: object
-                groups: [create, update]
+        categories:
             - NotBlank:
                 groups: [create, update]
             - NotNull:

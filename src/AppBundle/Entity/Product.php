@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -27,10 +28,20 @@ class Product
     private $price;
 
     /**
+     * @var ArrayCollection $categories
+     */
+    private $categories;
+
+    /**
      * @var Category $category
      */
     private $category;
 
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
+    
     /**
      * @return integer
      */
@@ -80,19 +91,42 @@ class Product
     /**
      * @return Category
      */
-    public function getCategory(): ? Category
+    public function getCategory()
     {
         return $this->category;
     }
 
     /**
-     * @param Category $category
-     * @return Product
+     * @return ArrayCollection|null
      */
-    public function setCategory($category): Product
+    public function getCategories(): ? ArrayCollection
     {
-        $this->category = $category;
+        return $this->categories;
+    }
+
+    /**
+     * @param Category $category
+     * @return Product|null
+     */
+    public function addCategory(Category $category): ? Product
+    {
+        if ($this->categories->contains($category)) {
+            return null;
+        }
+
+        $this->categories->add($category);
+        $category->addProduct($this);
 
         return $this;
+    }
+
+    public function removeCategory(Category $category)
+    {
+        if (!$this->categories->contains($category)) {
+            return;
+        }
+
+        $this->categories->remove($category);
+        $category->removeProduct($this);
     }
 }

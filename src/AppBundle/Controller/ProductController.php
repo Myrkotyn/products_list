@@ -84,21 +84,13 @@ class ProductController extends FOSRestController
             DeserializationContext::create()->setGroups(['create'])
         );
 
-        $parent = $product->getCategory();
-        if ($parent !== null) {
-            $parentId = $parent->getId();
-            $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
-            $category = $categoryRepository->find($parentId);
-            if ($category) {
-                $product->setCategory($category);
-            } else {
-                $product->setCategory(null);
-            }
-        }
-
         $errors = $this->get('validator')->validate($product, null, ['create']);
         if (count($errors) > 0) {
             return View::create($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        foreach ($product->getCategories() as $category) {
+            $product->addCategory($category);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -139,25 +131,15 @@ class ProductController extends FOSRestController
             DeserializationContext::create()->setGroups($groups)
         );
 
-        $category = $deserializedProduct->getCategory();
-        if ($category !== null) {
-            $parentId = $category->getId();
-            $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
-            $category = $categoryRepository->find($parentId);
-            if ($category) {
-                $deserializedProduct->setCategory($category);
-                $product->setCategory($category);
-            } else {
-                $deserializedProduct->setCategory(null);
-                $product->setCategory(null);
-            }
-        }
-
         $errors = $this->get('validator')->validate($deserializedProduct, null, $groups);
         if (count($errors) > 0) {
             return View::create($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
         if ($product) {
+            foreach ($deserializedProduct->getCategories() as $category) {
+                $product->addCategory($category);
+            }
             $product->setName($deserializedProduct->getName())
                 ->setPrice($deserializedProduct->getPrice());
             $deserializedProduct = $product;
