@@ -75,7 +75,6 @@ class ProductController extends FOSRestController
      */
     public function getAllByCategoryAction(Request $request, int $id)
     {
-        $products = [];
         $repository = $this->getDoctrine()->getRepository(Product::class);
         $catRepo = $this->getDoctrine()->getRepository(Category::class);
         $category = $catRepo->find($id);
@@ -84,13 +83,7 @@ class ProductController extends FOSRestController
             throw new NotFoundHttpException("Category #$id not found!");
         }
 
-        $categories = $catRepo->getChildren($category);
-
-        $products = array_merge($products, $repository->productsByCategory($id));
-        /** @var Category $category */
-        foreach ($categories as $category) {
-            $products = array_merge($products, $repository->productsByCategory($category->getId()));
-        }
+        $products = $repository->productsByCategory($id);
 
         $view = View::create($products);
         $context = (new Context())->setGroups(['default']);

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr;
@@ -33,16 +34,19 @@ class ProductRepository extends ServiceEntityRepository
     public function productsByCategory($categoryId)
     {
         $qb = $this->createQueryBuilder('p');
+        $catRepo = $this->getEntityManager()
+            ->getRepository(Category::class);
 
         return $qb
-            ->join('p.categories', 'c')
+            ->join('p.categories', 'pc')
             ->andWhere(
-                $qb->expr()->eq('c.id', ':categoryId')
+                $qb->expr()->in(
+                    'pc.id',
+                    $catRepo->childrenDQL()
+                )
             )
-            ->setParameter('categoryId', $categoryId)
             ->getQuery()
+            ->setParameters(['categoryId' => $categoryId])
             ->getResult();
-
-//        @todo recursive query for improve performance
     }
 }
