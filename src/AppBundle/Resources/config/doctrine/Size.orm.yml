@@ -1,0 +1,11 @@
+AppBundle\Entity\Size:
+    type: entity
+    table: product_size
+    extends: AppBundle\Entity\ProductAttributes
+    fields:
+        value:
+            type: string
+            nullable: false
+        type:
+            type: string
+            nullable: false

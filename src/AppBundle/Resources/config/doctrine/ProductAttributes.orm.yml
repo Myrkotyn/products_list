@@ -6,7 +6,9 @@ AppBundle\Entity\ProductAttributes:
         type: string
         length: 255
     discriminatorMap:
-        color: AppBundle\Entity\ProductAttributes\Color
+        size: AppBundle\Entity\Size
+        color: AppBundle\Entity\Color
+        is_active: AppBundle\Entity\IsActive
     table: product_attributes
     id:
         id:

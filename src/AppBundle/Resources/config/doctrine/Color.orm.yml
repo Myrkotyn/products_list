@@ -1,4 +1,4 @@
-AppBundle\Entity\ProductAttributes\Color:
+AppBundle\Entity\Color:
     type: entity
     table: product_color
     extends: AppBundle\Entity\ProductAttributes

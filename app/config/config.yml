@@ -117,4 +117,6 @@ stof_doctrine_extensions:
 easy_admin:
     entities:
         # List the entity class name you want to manage
-        - AppBundle\Entity\ProductAttributes\Color
+        - AppBundle\Entity\Color
+        - AppBundle\Entity\IsActive
+        - AppBundle\Entity\Size

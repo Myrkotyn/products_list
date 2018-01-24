@@ -1,8 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\ProductAttributes;
-
-use AppBundle\Entity\ProductAttributes;
+namespace AppBundle\Entity;
 
 class Color extends ProductAttributes
 {

@@ -1,0 +1,11 @@
+AppBundle\Entity\IsActive:
+    type: entity
+    table: product_is_active
+    extends: AppBundle\Entity\ProductAttributes
+    fields:
+        value:
+            type: string
+            nullable: false
+        type:
+            type: string
+            nullable: false
