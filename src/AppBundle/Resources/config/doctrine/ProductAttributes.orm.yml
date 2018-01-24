@@ -1,0 +1,27 @@
+AppBundle\Entity\ProductAttributes:
+    type: entity
+    inheritanceType: JOINED
+    discriminatorColumn:
+        name: dtype
+        type: string
+        length: 255
+    discriminatorMap:
+        color: AppBundle\Entity\ProductAttributes\Color
+    table: product_attributes
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    manyToOne:
+        product:
+            targetEntity: AppBundle\Entity\Product
+            inversedBy: attributes
+            joinColumns:
+                product_id:
+                    referencedColumnName: id
+            orphanRemoval: false

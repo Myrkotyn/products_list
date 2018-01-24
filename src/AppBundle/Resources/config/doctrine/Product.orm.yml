@@ -22,4 +22,7 @@ AppBundle\Entity\Product:
         categories:
             targetEntity: AppBundle\Entity\Category
             inversedBy: products
-
+    oneToMany:
+        attributes:
+            targetEntity: AppBundle\Entity\ProductAttributes
+            mappedBy: product

@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Class Product
@@ -33,6 +34,13 @@ class Product
     private $categories;
 
     /**
+     * Product attributes
+     *
+     * @var Collection
+     */
+    private $attributes;
+
+    /**
      * @var Category $category
      */
     private $category;
@@ -40,6 +48,12 @@ class Product
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->attributes = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
     
     /**

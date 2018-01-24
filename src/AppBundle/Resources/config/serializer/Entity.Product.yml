@@ -13,3 +13,6 @@ AppBundle\Entity\Product:
         categories:
             type: ArrayCollection<AppBundle\Entity\Category>
             groups: [default, create, update]
+        attributes:
+            type: ArrayCollection<AppBundle\Entity\ProductAttributes>
+            groups: [default]
