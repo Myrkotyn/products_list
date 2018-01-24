@@ -1,4 +1,4 @@
-AppBundle\Entity\ProductAttributes\Color:
+AppBundle\Entity\IsActive:
     exclusion_policy: ALL
     properties:
         id:
