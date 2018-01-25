@@ -7,3 +7,12 @@ AppBundle\Entity\IsActive:
         value:
             type: bool
             groups: [default, create, update]
+
+    virtual_properties:
+        getAttributeName:
+            serialized_name: attribute
+            type: string
+            accessor:
+                getter: getAttributeName
+            read_only: true
+            groups: [default]

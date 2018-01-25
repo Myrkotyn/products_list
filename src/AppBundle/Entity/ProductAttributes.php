@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use ReflectionClass;
+
 abstract class ProductAttributes
 {
     /**
@@ -44,5 +46,13 @@ abstract class ProductAttributes
     public function setProduct(Product $product): void
     {
         $this->product = $product;
+    }
+
+    /**
+     * @return string
+     * @throws \ReflectionException
+     */
+    public function getAttributeName() {
+        return (new ReflectionClass($this))->getShortName();
     }
 }
