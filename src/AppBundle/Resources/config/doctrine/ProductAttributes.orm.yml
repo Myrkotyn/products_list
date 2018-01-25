@@ -22,6 +22,7 @@ AppBundle\Entity\ProductAttributes:
     manyToOne:
         product:
             targetEntity: AppBundle\Entity\Product
+            cascade: ["persist", "merge", "detach"]
             inversedBy: attributes
             joinColumns:
                 product_id:

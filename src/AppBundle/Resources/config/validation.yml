@@ -3,3 +3,11 @@ product:
 
 category:
     resource: 'validation/category.yml'
+
+# Product attributes
+isActive:
+    resource: 'validation/isActive.yml'
+color:
+    resource: 'validation/color.yml'
+size:
+    resource: 'validation/size.yml'

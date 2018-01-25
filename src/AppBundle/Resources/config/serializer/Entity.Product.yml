@@ -15,4 +15,4 @@ AppBundle\Entity\Product:
             groups: [default, create, update]
         attributes:
             type: ArrayCollection<AppBundle\Entity\ProductAttributes>
-            groups: [default]
+            groups: [default, create, update]

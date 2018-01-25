@@ -1,0 +1,10 @@
+AppBundle\Entity\IsActive:
+    properties:
+        value:
+            - Type:
+                type: bool
+                groups: [create, update]
+            - NotBlank:
+                groups: [create, update]
+            - NotNull:
+                groups: [create, update]

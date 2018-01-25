@@ -26,3 +26,4 @@ AppBundle\Entity\Product:
         attributes:
             targetEntity: AppBundle\Entity\ProductAttributes
             mappedBy: product
+            cascade: ["persist", "merge", "detach"]
