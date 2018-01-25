@@ -7,6 +7,3 @@ AppBundle\Entity\Size:
         value:
             type: string
             groups: [default, create, update]
-        type:
-            type: string
-            groups: [default, create, update]

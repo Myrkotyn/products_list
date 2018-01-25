@@ -6,6 +6,3 @@ AppBundle\Entity\Size:
         value:
             type: string
             nullable: false
-        type:
-            type: string
-            nullable: false

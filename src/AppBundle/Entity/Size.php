@@ -10,11 +10,6 @@ class Size extends ProductAttributes
     private $value;
 
     /**
-     * @var string $type
-     */
-    private $type;
-
-    /**
      * @return string
      */
     public function getValue(): ? string
@@ -28,21 +23,5 @@ class Size extends ProductAttributes
     public function setValue(string $value): void
     {
         $this->value = $value;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): ? string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType(string $type): void
-    {
-        $this->type = $type;
     }
 }

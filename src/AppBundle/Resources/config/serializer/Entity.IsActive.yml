@@ -5,8 +5,5 @@ AppBundle\Entity\IsActive:
             read_only: true
             groups: [default, update]
         value:
-            type: string
-            groups: [default, create, update]
-        type:
-            type: string
+            type: bool
             groups: [default, create, update]

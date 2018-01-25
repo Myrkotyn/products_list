@@ -5,14 +5,9 @@ namespace AppBundle\Entity;
 class IsActive extends ProductAttributes
 {
     /**
-     * @var string $value
+     * @var bool $value
      */
     private $value;
-
-    /**
-     * @var string $type
-     */
-    private $type;
 
     /**
      * @return string
@@ -28,21 +23,5 @@ class IsActive extends ProductAttributes
     public function setValue(string $value): void
     {
         $this->value = $value;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): ? string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType(string $type): void
-    {
-        $this->type = $type;
     }
 }

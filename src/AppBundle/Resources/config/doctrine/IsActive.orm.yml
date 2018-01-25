@@ -4,8 +4,5 @@ AppBundle\Entity\IsActive:
     extends: AppBundle\Entity\ProductAttributes
     fields:
         value:
-            type: string
-            nullable: false
-        type:
-            type: string
+            type: boolean
             nullable: false
