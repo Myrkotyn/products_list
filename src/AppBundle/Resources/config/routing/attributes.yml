@@ -1,3 +1,0 @@
-api_v1_get_all_attributes:
-    path: /
-    controller: AppBundle:Attributes:getAll
