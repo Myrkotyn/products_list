@@ -17,3 +17,6 @@ AppBundle\Entity\Product:
                 groups: [create, update]
             - NotNull:
                 groups: [create, update]
+             - Valid: ~
+        attributes:
+             - Valid: ~
