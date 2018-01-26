@@ -1,0 +1,11 @@
+AppBundle\Entity\Group:
+    type: entity
+    table: product_groups
+    extends: AppBundle\Entity\ProductAttributes
+    manyToOne:
+        group:
+            targetEntity: AppBundle\Entity\GroupType
+            joinColumn:
+                name: group_type_id
+                referencedColumnName: id
+                onDelete: CASCADE

@@ -1,0 +1,17 @@
+AppBundle\Entity\Group:
+    exclusion_policy: ALL
+    properties:
+        id:
+            read_only: true
+            groups: [default, create, update]
+        group:
+            type: AppBundle\Entity\GroupType
+            groups: [default, create, update]
+    virtual_properties:
+        getAttributeName:
+            serialized_name: attribute
+            type: string
+            accessor:
+                getter: getAttributeName
+            read_only: true
+            groups: [default]

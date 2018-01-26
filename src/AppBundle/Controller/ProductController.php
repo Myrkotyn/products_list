@@ -117,6 +117,10 @@ class ProductController extends FOSRestController
             $product->addCategory($category);
         }
 
+        foreach ($product->getAttributes() as $attribute) {
+            $product->addAttribute($attribute);
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($product);
         $em->flush();

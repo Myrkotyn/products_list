@@ -1,0 +1,15 @@
+AppBundle\Entity\GroupType:
+    type: entity
+    table: group_types
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            unique:
+                true
+    fields:
+        name:
+            type: string

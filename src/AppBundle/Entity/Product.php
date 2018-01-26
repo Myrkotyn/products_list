@@ -36,7 +36,7 @@ class Product
     /**
      * Product attributes
      *
-     * @var Collection
+     * @var ProductAttributes
      */
     private $attributes;
 
@@ -134,6 +134,9 @@ class Product
         return $this;
     }
 
+    /**
+     * @param Category $category
+     */
     public function removeCategory(Category $category)
     {
         if (!$this->categories->contains($category)) {
@@ -142,5 +145,41 @@ class Product
 
         $this->categories->remove($category);
         $category->removeProduct($this);
+    }
+
+    /**
+     * @return ArrayCollection|null
+     */
+    public function getAttributes(): ? ArrayCollection
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * @param ProductAttributes $attribute
+     * @return $this|null
+     */
+    public function addAttribute(ProductAttributes $attribute)
+    {
+        if ($this->attributes->contains($attribute)) {
+            return null;
+        }
+
+        $this->attributes->add($attribute);
+        $attribute->setProduct($this);
+
+        return $this;
+    }
+
+    /**
+     * @param ProductAttributes $attribute
+     */
+    public function removeAttribute(ProductAttributes $attribute)
+    {
+        if (!$this->attributes->contains($attribute)) {
+            return;
+        }
+
+        $this->attributes->remove($attribute);
     }
 }

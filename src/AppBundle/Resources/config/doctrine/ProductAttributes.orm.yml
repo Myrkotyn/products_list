@@ -9,6 +9,7 @@ AppBundle\Entity\ProductAttributes:
         size: AppBundle\Entity\Size
         color: AppBundle\Entity\Color
         is_active: AppBundle\Entity\IsActive
+        group: AppBundle\Entity\Group
     table: product_attributes
     id:
         id:
@@ -22,9 +23,4 @@ AppBundle\Entity\ProductAttributes:
     manyToOne:
         product:
             targetEntity: AppBundle\Entity\Product
-            cascade: ["persist", "merge", "detach"]
             inversedBy: attributes
-            joinColumns:
-                product_id:
-                    referencedColumnName: id
-            orphanRemoval: false

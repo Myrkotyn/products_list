@@ -3,7 +3,7 @@ AppBundle\Entity\Product:
     properties:
         id:
             read_only: true
-            groups: [default, update]
+            groups: [default, create, update]
         name:
             type: string
             groups: [default, create, update]
