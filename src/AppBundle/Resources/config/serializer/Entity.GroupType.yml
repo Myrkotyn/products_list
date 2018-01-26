@@ -1,0 +1,9 @@
+AppBundle\Entity\GroupType:
+     exclusion_policy: ALL
+     properties:
+        id:
+            type: integer
+            groups: [default, create, update]
+        name:
+            type: string
+            groups: [default, create, update]

@@ -35,7 +35,7 @@ class ProductController extends FOSRestController
             throw new NotFoundHttpException(sprintf("Product #%d does not exist", $id));
         }
         $view = View::create($product);
-        $context = (new Context())->setGroups(['default']);
+        $context = (new Context())->setGroups(['default'])->enableMaxDepth();
         $view->setContext($context);
 
         return $view;
