@@ -23,4 +23,10 @@ AppBundle\Entity\ProductAttributes:
     manyToOne:
         product:
             targetEntity: AppBundle\Entity\Product
+            cascade: ["persist", "merge", "detach"]
             inversedBy: attributes
+            nullable: false
+            joinColumns:
+                product_id:
+                    referencedColumnName: id
+            orphanRemoval: false

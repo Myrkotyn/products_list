@@ -42,10 +42,13 @@ abstract class ProductAttributes
 
     /**
      * @param Product $product
+     * @return ProductAttributes
      */
-    public function setProduct(Product $product): void
+    public function setProduct(Product $product): ? ProductAttributes
     {
         $this->product = $product;
+
+        return $this;
     }
 
     /**

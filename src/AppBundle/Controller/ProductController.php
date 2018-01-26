@@ -125,6 +125,7 @@ class ProductController extends FOSRestController
         $em->persist($product);
         $em->flush();
 
+        $em->refresh($product);
         $view = View::create($product);
         $context = (new Context())->setGroups(['default']);
         $view->setContext($context);

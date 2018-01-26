@@ -36,7 +36,7 @@ class Product
     /**
      * Product attributes
      *
-     * @var ProductAttributes
+     * @var ArrayCollection $attributes
      */
     private $attributes;
 
@@ -161,10 +161,6 @@ class Product
      */
     public function addAttribute(ProductAttributes $attribute)
     {
-        if ($this->attributes->contains($attribute)) {
-            return null;
-        }
-
         $this->attributes->add($attribute);
         $attribute->setProduct($this);
 
